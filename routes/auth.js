@@ -2,9 +2,9 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const db = require('../conn'); // your better-sqlite3 connection
+const db = require('../conn');
 
-// Helper: show flash messages once
+// Helper: flash messages
 function showMessage(req) {
   const message = req.session.message;
   req.session.message = null;
@@ -63,10 +63,14 @@ router.post('/login', async (req, res) => {
       return res.redirect('/auth/login');
     }
 
-    // Save student to session and ensure it's written before redirect
-     req.session.student = student;
-
-    console.log("SESSION AFTER LOGIN:", req.session);
+    // ✅ Store student in session directly — no save() needed
+    req.session.student = {
+      student_id: student.student_id,
+      name: student.name,
+      email: student.email,
+      course: student.course,
+      year_level: student.year_level
+    };
 
     req.session.message = { type: 'success', text: 'Login successful!' };
     res.redirect('/student/dashboard');
@@ -82,10 +86,8 @@ router.post('/login', async (req, res) => {
 // Logout
 // ---------------------
 router.get('/logout', (req, res) => {
-  req.session.destroy((err) => {
-    if (err) console.error(err);
-    res.redirect('/');
-  });
+  req.session = null; // clear cookie-session
+  res.redirect('/');
 });
 
 module.exports = router;
