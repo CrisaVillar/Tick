@@ -3,7 +3,7 @@ const session = require('express-session');
 const path = require('path');
 const conn = require('./conn');
 const app = express();
-const port = 2000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true}));
@@ -34,6 +34,5 @@ app.use('/auth', require('./routes/auth'));
 app.use('/student', require('./routes/student'));
 
 
-app.listen(port, ()=> {
-    console.log(`Running at localhost:${port}`);
-});
+app.listen(PORT, ()=> 
+    console.log(`Running at port:${PORT}`));
