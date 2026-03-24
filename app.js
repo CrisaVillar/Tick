@@ -13,8 +13,8 @@ app.set('view engine', 'ejs');
 //Session setup
 app.use(session({
     secret: 'ticktock1secretkey',
-    resave: true,
-    saveUninitialized: true
+    resave: false,
+    saveUninitialized: false
 }));
 
 //Custom flash
