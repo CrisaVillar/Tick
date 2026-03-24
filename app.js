@@ -3,7 +3,7 @@ const session = require('express-session');
 const path = require('path');
 const conn = require('./conn');
 const app = express();
-const PORT = process.env.PORT || 10000;
+
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true}));
@@ -34,5 +34,6 @@ app.use('/auth', require('./routes/auth'));
 app.use('/student', require('./routes/student'));
 
 
-app.listen(PORT, ()=> 
-    console.log(`Running at port:${PORT}`));
+const PORT = process.env.PORT || 10000;
+console.log(`Render assigned PORT: ${process.env.PORT}`); 
+app.listen(PORT, () => console.log(`Running at port: ${PORT}`));
