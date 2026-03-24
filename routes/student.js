@@ -3,16 +3,25 @@ const express = require('express');
 const router = express.Router();
 const db = require('../conn');
 
-// Helper
+// Helper to show flash messages once
 function showMessage(req) {
   const message = req.session.message;
   req.session.message = null;
   return message;
 }
 
+// ---------------------
 // Dashboard
+// ---------------------
 router.get('/dashboard', (req, res) => {
-  if (!req.session.student) return res.redirect('/auth/login');
+  if (!req.session.student) {
+    console.log('No session found! Redirecting to login...');
+    return res.redirect('/auth/login');
+  }
+
+  // DEBUG: log session contents
+  console.log('Session student object:', req.session.student);
+
   const studId = req.session.student.student_id;
 
   try {
@@ -50,12 +59,13 @@ router.get('/dashboard', (req, res) => {
   }
 });
 
+// ---------------------
 // Daily Planner
+// ---------------------
 router.get('/daily-planner', (req, res) => {
   if (!req.session.student) return res.redirect('/auth/login');
   const studId = req.session.student.student_id;
   const tasks = db.prepare('SELECT * FROM tasks WHERE student_id = ? ORDER BY start_time ASC').all(studId);
-
   res.render('daily-planner', { student: req.session.student, tasks, message: showMessage(req) });
 });
 
@@ -87,7 +97,6 @@ router.post('/add-task', (req, res) => {
 // Update Task Status
 router.post('/update-status/:task_id', (req, res) => {
   if (!req.session.student) return res.redirect('/auth/login');
-
   const taskId = req.params.task_id;
   const newStatus = req.body.status === 'Done' ? 'Done' : 'Pending';
 
@@ -105,7 +114,6 @@ router.post('/update-status/:task_id', (req, res) => {
 // Edit Task
 router.get('/edit-task/:task_id', (req, res) => {
   if (!req.session.student) return res.redirect('/auth/login');
-
   const taskId = req.params.task_id;
   const task = db.prepare('SELECT * FROM tasks WHERE task_id = ?').get(taskId);
 
@@ -136,8 +144,8 @@ router.post('/edit-task/:task_id', (req, res) => {
 // Delete Task
 router.post('/delete-task/:task_id', (req, res) => {
   if (!req.session.student) return res.redirect('/auth/login');
-
   const taskId = req.params.task_id;
+
   try {
     db.prepare('DELETE FROM tasks WHERE task_id = ?').run(taskId);
     req.session.message = { type: 'success', text: 'Task deleted successfully!' };
@@ -149,12 +157,13 @@ router.post('/delete-task/:task_id', (req, res) => {
   }
 });
 
+// ---------------------
 // Study Tracker
+// ---------------------
 router.get('/study-tracker', (req, res) => {
   if (!req.session.student) return res.redirect('/auth/login');
   const studId = req.session.student.student_id;
   const sessions = db.prepare('SELECT * FROM study_sessions WHERE student_id = ? ORDER BY start_time DESC, date_created DESC').all(studId);
-
   res.render('study-tracker', { student: req.session.student, sessions, message: showMessage(req) });
 });
 
@@ -188,8 +197,8 @@ router.post('/log-session', (req, res) => {
 // Delete Study Session
 router.post('/delete-session/:study_id', (req, res) => {
   if (!req.session.student) return res.redirect('/auth/login');
-
   const studyId = req.params.study_id;
+
   try {
     db.prepare('DELETE FROM study_sessions WHERE study_id = ?').run(studyId);
     req.session.message = { type: 'success', text: 'Study session deleted successfully!' };
