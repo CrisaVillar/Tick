@@ -1,16 +1,15 @@
-const mysql = require('mysql2');
+const sqlite3 = require('sqlite3').verbose();
+const path = require('path');
 
 
-const conn = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: "tick-tock1"
+const dbPath = path.join(__dirname, 'database.db');
+
+const db = new sqlite3.Database(dbPath, (err) => {
+  if (err) {
+    console.error('Failed to connect to SQLite DB:', err);
+  } else {
+    console.log('Connected to SQLite database.');
+  }
 });
 
-conn.connect((err)=> {
-    if(err) throw err;
-    console.log('Database Connected!');
-});
-
-module.exports = conn;
+module.exports = db;
