@@ -14,7 +14,8 @@ app.set('view engine', 'ejs');
 app.use(cookieSession({
     name: 'session',
     keys: ['ticktock1secretkey', 'ticktock_secret2'],
-    maxAge: 24 * 60 * 60 * 1000
+    maxAge: 24 * 60 * 60 * 1000,
+    secure: false
 }));
 
 //Custom flash
