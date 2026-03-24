@@ -1,5 +1,5 @@
 const express = require('express');
-const session = require('express-session');
+const session = require('cookie-session');
 const path = require('path');
 const conn = require('./conn');
 const app = express();
@@ -11,11 +11,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 //Session setup
-app.use(session({
-    secret: 'ticktock1secretkey',
-    resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false } 
+app.use(cookieSession({
+    name: 'session',
+    keys: ['ticktock1secretkey', 'ticktock_secret2'],
+    maxAge: 24 * 60 * 60 * 1000
 }));
 
 //Custom flash
