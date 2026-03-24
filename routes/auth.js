@@ -64,16 +64,12 @@ router.post('/login', async (req, res) => {
     }
 
     // Save student to session and ensure it's written before redirect
-    req.session.student = student;
-    req.session.save((err) => {
-      if (err) {
-        console.error(err);
-        req.session.message = { type: 'danger', text: 'Login failed' };
-        return res.redirect('/auth/login');
-      }
-      req.session.message = { type: 'success', text: 'Login successful!' };
-      res.redirect('/student/dashboard');
-    });
+     req.session.student = student;
+
+    console.log("SESSION AFTER LOGIN:", req.session);
+
+    req.session.message = { type: 'success', text: 'Login successful!' };
+    res.redirect('/student/dashboard');
 
   } catch (err) {
     console.error(err);
