@@ -3,7 +3,7 @@ const session = require('express-session');
 const path = require('path');
 const conn = require('./conn');
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 10000;
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.urlencoded({ extended: true}));
