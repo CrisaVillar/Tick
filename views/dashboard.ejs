@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tick-Tock to Top Marks | Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.0/font/bootstrap-icons.min.css" rel="stylesheet">
+  <style>
+    .sidebar {
+      width: 250px;
+      height: 100vh;
+      background-color: #f8f9ff;
+      position: fixed;
+      left: 0;
+      top: 0;
+      padding: 20px;
+    }
+    
+    .main-content {
+      margin-left: 250px;
+      background-color: #f0f2ff;
+      min-height: 100vh;
+      padding: 30px;
+    }
+    
+    .nav-link {
+      color: #6c757d;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+    }
+    
+    .nav-link.active {
+      background-color: #6f42c1;
+      color: white;
+    }
+    
+    .nav-link:hover {
+      background-color: #e9ecef;
+      color: #495057;
+    }
+    
+    .nav-link.active:hover {
+      background-color: #6f42c1;
+      color: white;
+    }
+    
+    .stat-card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .widget-card {
+      background: white;
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      height: 100%;
+    }
+    
+    .progress-bar-custom {
+      background-color: #000;
+      height: 8px;
+      border-radius: 4px;
+    }
+    
+    .priority-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+    
+    .priority-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+    
+    .user-profile {
+      position: absolute;
+      bottom: 80px;
+      left: 20px;
+      right: 20px;
+    }
+    
+    .logout-btn {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      right: 20px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <% if (message) { %>
+  <div class="alert alert-<%= message.type %> alert-dismissible fade show text-center position-fixed top-0 start-50 translate-middle-x mt-3" 
+       style="z-index: 2000; width: 90%; max-width: 500px;" role="alert">
+    <%= message.text %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+<% } %>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="mb-4">
+      <h4 class="text-primary fw-bold mb-1">Tick-Tock to Top Marks</h4>
+      <small class="text-muted">Your Learning Companion</small>
+    </div>
+    
+    <nav class="nav flex-column">
+      <a href="#" class="nav-link active">
+        <i class="bi bi-grid-fill me-3"></i>
+        Dashboard
+      </a>
+      <a href="/student/daily-planner" class="nav-link">
+        <i class="bi bi-calendar3 me-3"></i>
+        Daily Planner
+      </a>
+      <a href="/student/study-tracker" class="nav-link">
+        <i class="bi bi-graph-up me-3"></i>
+        Study Tracker
+      </a>
+      <a href="#" class="nav-link">
+        <i class="bi bi-person me-3"></i>
+        Profile
+      </a>
+    </nav>
+    
+    <div class="user-profile">
+      <div class="d-flex align-items-center">
+        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+          <%= student.name.charAt(0).toUpperCase() %>
+        </div>
+        <div class="ms-3">
+          <div class="fw-semibold"><%= student.name %></div>
+          <small class="text-muted"><%= student.email %></small>
+        </div>
+      </div>
+    </div>
+    
+    <div class="logout-btn">
+      <a href="/auth/logout" class="nav-link">
+        <i class="bi bi-box-arrow-right me-3"></i>
+        Logout
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="mb-4">
+      <h2 class="fw-bold mb-2">Dashboard</h2>
+      <p class="text-muted">Track your progress and stay on top of your goals</p>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+      <div class="col-md-3 mb-3">
+        <div class="stat-card">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h6 class="text-muted mb-1">Total Tasks</h6>
+              <h2 class="fw-bold mb-0"><%= totalTasks %></h2>
+              <small class="text-muted">Active tasks in planner</small>
+            </div>
+            <i class="bi bi-clock text-primary"></i>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-3 mb-3">
+        <div class="stat-card">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h6 class="text-muted mb-1">Completed</h6>
+              <h2 class="fw-bold mb-0"><%= completedTasks %></h2>
+              <small class="text-muted">Tasks finished</small>
+            </div>
+            <i class="bi bi-check-circle text-success"></i>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-3 mb-3">
+        <div class="stat-card">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h6 class="text-muted mb-1">Study Hours</h6>
+              <h2 class="fw-bold mb-0"><%= totalStudyHours %></h2>
+              <small class="text-muted">Total learning time</small>
+            </div>
+            <i class="bi bi-book text-info"></i>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-3 mb-3">
+        <div class="stat-card">
+          <div class="d-flex justify-content-between align-items-start mb-3">
+            <div>
+              <h6 class="text-muted mb-1">Study Sessions</h6>
+              <h2 class="fw-bold mb-0"><%= totalSession %></h2>
+              <small class="text-muted">Logged sessions</small>
+            </div>
+            <i class="bi bi-bar-chart text-warning"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Widgets Row -->
+    <div class="row">
+      <div class="col-md-6 mb-4">
+        <div class="widget-card">
+          <h6 class="fw-semibold mb-1">Task Completion Rate</h6>
+          <p class="text-muted small mb-4">Your productivity at a glance</p>
+          <%
+          const completionRate = totalTasks > 0 ? ((completedTasks / totalTasks)* 100).toFixed(0):0;
+          %>
+
+          <div class="mb-3">
+            <div class="d-flex justify-content-between mb-2">
+              <span class="small">Overall Progress</span>
+              <span class="small fw-semibold"><%= completionRate %></span>
+            </div>
+            <div class="progress" style="height: 8px;">
+              <div class="progress-bar bg-dark" style="width: <%= completionRate %>%"></div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-6">
+              <div class="text-center">
+                <h5 class="text-success fw-bold mb-1"><%= completedTasks %></h5>
+                <small class="text-muted">Completed</small>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="text-center">
+                <h5 class="text-danger fw-bold mb-1"><%= pendingTasks %></h5>
+                <small class="text-muted">Pending</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-6 mb-4">
+        <div class="widget-card">
+          <h6 class="fw-semibold mb-1">Tasks by Priority</h6>
+          <p class="text-muted small mb-4">Distribution of your tasks</p>
+          
+          <div class="priority-item">
+            <div class="d-flex align-items-center">
+              <div class="priority-dot bg-danger"></div>
+              <span>High Priority</span>
+            </div>
+            <span class="fw-semibold"><%= priorityStat.high %></span>
+          </div>
+          
+          <div class="priority-item">
+            <div class="d-flex align-items-center">
+              <div class="priority-dot bg-warning"></div>
+              <span>Medium Priority</span>
+            </div>
+            <span class="fw-semibold"><%= priorityStat.medium %></span>
+          </div>
+          
+          <div class="priority-item">
+            <div class="d-flex align-items-center">
+              <div class="priority-dot bg-success"></div>
+              <span>Low Priority</span>
+            </div>
+            <span class="fw-semibold"><%= priorityStat.low %></span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-6 mb-4">
+        <div class="widget-card">
+          <h6 class="fw-semibold mb-1">Study Time by Subject</h6>
+          <p class="text-muted small mb-4">Hours spent on each subject</p>
+
+
+          <% if (studyBySubject.length > 0){ %>
+            <% studyBySubject.forEach(sub => { %>
+          <div class="d-flex justify-content-between align-items-center">
+            <span><%= sub.subject %></span>
+            <span class="text-primary fw-semibold"><%= (sub.total_minutes / 60).toFixed(1) %>h</span>
+          </div>
+          <% }) %>
+          <% }else { %>
+            <p class ="text-muted small">No study data yet</p>
+         <% } %>
+        </div>
+      </div>
+      
+      <div class="col-md-6 mb-4">
+        <div class="widget-card">
+          <h6 class="fw-semibold mb-1">Recent Study Sessions</h6>
+          <p class="text-muted small mb-4">Your latest study activities</p>
+          
+          <% if(recentSessions.length > 0){ %>
+            <% recentSessions.forEach(sess => { %>
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <div class="fw-semibold"><%= sess.subject %></div>
+              <small class="text-muted"><%= new Date(sess.start_time).toLocaleDateString() %></small>
+            </div>
+            <span class="text-primary fw-semibold"><%= sess.duration_minutes %>m</span>
+          </div>
+          <% }) %>
+          <% }else { %>
+            <p class="text-muted small">No study session recorded yet</p>
+            <% } %>
+          </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
