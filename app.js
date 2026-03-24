@@ -15,6 +15,7 @@ app.use(session({
     secret: 'ticktock1secretkey',
     resave: false,
     saveUninitialized: false
+    cookie: { secure: false } 
 }));
 
 //Custom flash
