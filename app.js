@@ -14,7 +14,7 @@ app.set('view engine', 'ejs');
 app.use(session({
     secret: 'ticktock1secretkey',
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
     cookie: { secure: false } 
 }));
 
