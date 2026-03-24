@@ -26,7 +26,7 @@ router.get('/dashboard', (req, res) => {
 
   try {
     const totalTasks = db.prepare('SELECT COUNT(*) AS total FROM tasks WHERE student_id = ?').get(studId).total;
-    const completedTasks = db.prepare('SELECT COUNT(*) AS completed FROM tasks WHERE student_id = ? AND status = "Done"').get(studId).completed;
+    const completedTasks = db.prepare('SELECT COUNT(*) AS completed FROM tasks WHERE student_id = ? AND status = 'Done'').get(studId).completed;
     const priorityRow = db.prepare(`
       SELECT
         SUM(CASE WHEN priority='High' THEN 1 ELSE 0 END) AS high,
