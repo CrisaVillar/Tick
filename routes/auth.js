@@ -2,21 +2,23 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const db = require('../conn');
+const db = require('../conn'); // your better-sqlite3 connection
 
-// Helper to show flash messages
+// Helper: show flash messages once
 function showMessage(req) {
   const message = req.session.message;
   req.session.message = null;
   return message;
 }
 
-// Register page
+// ---------------------
+// Register Page
+// ---------------------
 router.get('/register', (req, res) => {
   res.render('register', { message: showMessage(req) });
 });
 
-// Register process
+// Register Process
 router.post('/register', async (req, res) => {
   const { name, email, password, course, year_level } = req.body;
   const hashedPass = await bcrypt.hash(password, 10);
@@ -36,12 +38,14 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// Login page
+// ---------------------
+// Login Page
+// ---------------------
 router.get('/login', (req, res) => {
   res.render('login', { message: showMessage(req) });
 });
 
-// Login process
+// Login Process
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -54,15 +58,23 @@ router.post('/login', async (req, res) => {
     }
 
     const match = await bcrypt.compare(password, student.password);
-
     if (!match) {
-      req.session.message = { type: 'danger', text: 'Incorrect Password' };
+      req.session.message = { type: 'danger', text: 'Incorrect password' };
       return res.redirect('/auth/login');
     }
 
+    // Save student to session and ensure it's written before redirect
     req.session.student = student;
-    req.session.message = { type: 'success', text: 'Login successful!' };
-    res.redirect('/student/dashboard');
+    req.session.save((err) => {
+      if (err) {
+        console.error(err);
+        req.session.message = { type: 'danger', text: 'Login failed' };
+        return res.redirect('/auth/login');
+      }
+      req.session.message = { type: 'success', text: 'Login successful!' };
+      res.redirect('/student/dashboard');
+    });
+
   } catch (err) {
     console.error(err);
     req.session.message = { type: 'danger', text: 'Login failed' };
@@ -70,9 +82,14 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// ---------------------
 // Logout
+// ---------------------
 router.get('/logout', (req, res) => {
-  req.session.destroy(() => res.redirect('/'));
+  req.session.destroy((err) => {
+    if (err) console.error(err);
+    res.redirect('/');
+  });
 });
 
 module.exports = router;
