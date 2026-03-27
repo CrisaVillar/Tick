@@ -1,0 +1,20 @@
+<% if (message) { %>
+  <div 
+    class="alert alert-<%= message.type %> alert-dismissible fade show position-fixed top-0 start-50 translate-middle-x mt-3 shadow"
+    style="z-index: 2000; width: 90%; max-width: 500px;" 
+    role="alert">
+    <i class="bi <%= message.type === 'success' ? 'bi-check-circle' : 'bi-exclamation-triangle' %> me-2"></i>
+    <%= message.text %>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      const alertEl = document.querySelector('.alert');
+      if (alertEl) {
+        const bsAlert = new bootstrap.Alert(alertEl);
+        bsAlert.close();
+      }
+    }, 3000);
+  </script>
+<% } %>
