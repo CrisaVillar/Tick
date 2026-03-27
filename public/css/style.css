@@ -1,0 +1,240 @@
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f6f8fc;
+  color: #333;
+}
+
+h1, h2, h3, h4, h5 {
+  font-weight: 600;
+}
+
+
+.sidebar {
+  width: 250px;
+  height: 100vh;
+  background-color: #f8f9ff;
+  position: fixed;
+  left: 0;
+  top: 0;
+  padding: 25px 20px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+}
+
+.sidebar .app-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #6f42c1;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.nav-link {
+  color: #6c757d;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: 0.3s;
+}
+
+.nav-link i {
+  font-size: 1.2rem;
+  margin-right: 10px;
+}
+
+.nav-link:hover {
+  background-color: #e9ecef;
+  color: #495057;
+}
+
+.nav-link.active {
+  background: linear-gradient(90deg, #6f42c1, #b084f0);
+  color: #fff;
+}
+
+
+.main, .main-content {
+  margin-left: 270px;
+  padding: 3rem;
+  background-color: #f6f8fc;
+  min-height: 100vh;
+}
+
+
+.card, .widget-card, .stat-card, .info-card {
+  background: #fff;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease;
+}
+
+.card:hover, .widget-card:hover, .stat-card:hover {
+  transform: scale(1.01);
+}
+
+
+.btn-primary {
+  background-color: #6f42c1 !important;
+  border: none !important;
+  border-radius: 8px !important;
+  color: #fff !important;
+  transition: all 0.3s ease !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: #5408f8 !important;
+  color: #fff !important;
+}
+
+
+.sidebar .nav-link {
+  color: #6c757d;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  background-color: #6f42c1 !important;
+  color: white !important;
+}
+
+
+
+.task-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.2rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-bottom: 15px;
+}
+
+.priority {
+  font-size: 12px;
+  text-transform: uppercase;
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-weight: 600;
+}
+
+.priority.high {
+  background-color: #fde2e2;
+  color: #e74c3c;
+}
+
+.priority.medium {
+  background-color: #fff5d6;
+  color: #f39c12;
+}
+
+.priority.low {
+  background-color: #d9fbd9;
+  color: #27ae60;
+}
+
+.checked {
+  text-decoration: line-through;
+  color: gray;
+}
+
+
+.card-outer, .session-row {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  margin-bottom: 1rem;
+}
+
+.duration-badge {
+  background: linear-gradient(90deg, #6f42c1, #b084f0);
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.modal-header {
+  background: linear-gradient(90deg, #6f42c1, #b084f0);
+  color: #fff;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
+
+
+.profile-card {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6f42c1, #b084f0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 48px;
+  font-weight: bold;
+  margin-right: 30px;
+  overflow: hidden;
+}
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+
+.user-profile {
+  position: absolute;
+  bottom: 80px;
+  left: 20px;
+  right: 20px;
+}
+
+.logout-btn {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+}
+
+.logout-btn a, .logout button {
+  display: block;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  text-align: center;
+  padding: 10px;
+  color: #333;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.logout-btn a:hover, .logout button:hover {
+  background-color: #e2e6ea;
+}
