@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tick-Tock to Top Marks | Profile</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+
+</head>
+<body>
+  <%- include('partials/alert') %>
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="mb-4">
+      <h4 class="text-primary fw-bold mb-1">Tick-Tock to Top Marks</h4>
+      <small class="text-muted">Your Learning Companion</small>
+    </div>
+    
+    <nav class="nav flex-column">
+      <a href="/student/dashboard" class="nav-link ">
+        <i class="bi bi-grid-fill me-3"></i>
+        Dashboard
+      </a>
+      <a href="/student/daily-planner" class="nav-link">
+        <i class="bi bi-calendar3 me-3"></i>
+        Daily Planner
+      </a>
+      <a href="/student/study-tracker" class="nav-link">
+        <i class="bi bi-graph-up me-3"></i>
+        Study Tracker
+      </a>
+      <a href="#" class="nav-link">
+        <i class="bi bi-person me-3"></i>
+        Profile
+      </a>
+    </nav>
+    
+    <div class="logout-btn">
+      <a href="/auth/logout" class="nav-link">
+        <i class="bi bi-box-arrow-right me-3"></i>
+        Logout
+      </a>
+    </div>
+  </div>
+
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <h2 class="fw-bold mb-4">Profile</h2>
+    <p class="text-muted mb-4">Manage your account information</p>
+
+    <div class="row g-4">
+  <!-- Left profile card -->
+  <div class="col-md-5">
+    <div class="profile-card">
+      <div class="avatar">
+        <% if (user.profile_pic) { %>
+          <img src="/uploads/<%= user.profile_pic %>" alt="Profile Picture">
+        <% } else { %>
+          <%= user.name.charAt(0).toUpperCase() %>
+        <% } %>
+      </div>
+      <div>
+        <h4><%= user.name %></h4>
+        <p class="text-muted mb-1"><%= user.email %></p>
+        <p class="text-muted mb-1"><i class="bi bi-book me-2"></i><%= user.course %></p>
+        <p class="text-muted"><i class="bi bi-mortarboard me-2"></i><%= user.year_level %></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right information card -->
+  <div class="col-md-7">
+    <div class="info-card">
+      <h5 class="fw-bold mb-3">Profile Information</h5>
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Full Name</label>
+        <input type="text" class="form-control" value="<%= user.name %>" readonly>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Email Address</label>
+        <input type="email" class="form-control" value="<%= user.email %>" readonly>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Course</label>
+        <input type="text" class="form-control" value="<%= user.course %>" readonly>
+      </div>
+      <div class="mb-3">
+        <label class="form-label fw-semibold">Year Level</label>
+        <input type="text" class="form-control" value="<%= user.year_level %>" readonly>
+      </div>
+      <button type="button" class="edit-btn btn btn-dark" data-bs-toggle="modal" data-bs-target="#editProfileModal">
+        Edit Profile
+    </button>
+
+    <!-- Edit Profile Modal -->
+<div class="modal fade" id="editProfileModal" tabindex="-1" aria-labelledby="editProfileModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header" style="background: linear-gradient(90deg, #7b2ff7, #f107a3); color: #fff;">
+        <h5 class="modal-title fw-bold" id="editProfileModalLabel">Edit Profile</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+
+      <form action="/student/update-profile" method="POST">
+        <div class="modal-body px-4 py-3">
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Full Name</label>
+            <input type="text" name="name" class="form-control" value="<%= user.name %>" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Course</label>
+            <input type="text" name="course" class="form-control" value="<%= user.course %>" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Year Level</label>
+            <select name="year_level" class="form-select" required>
+              <option value="1st Year" <%= user.year_level === '1st Year' ? 'selected' : '' %>>1st Year</option>
+              <option value="2nd Year" <%= user.year_level === '2nd Year' ? 'selected' : '' %>>2nd Year</option>
+              <option value="3rd Year" <%= user.year_level === '3rd Year' ? 'selected' : '' %>>3rd Year</option>
+              <option value="4th Year" <%= user.year_level === '4th Year' ? 'selected' : '' %>>4th Year</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-dark">Save Changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+
+
+</body>
+</html>
