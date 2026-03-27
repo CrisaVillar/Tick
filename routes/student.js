@@ -210,4 +210,68 @@ router.post('/delete-session/:study_id', (req, res) => {
   }
 });
 
+
+// ---------------------
+// PROFILE
+// ---------------------
+router.get('/profile', (req, res) => {
+  if (!req.session.student) return res.redirect('/auth/login');
+
+  const studId = req.session.student.student_id;
+
+  try {
+    const user = db.prepare(
+      'SELECT name, email, course, year_level FROM students WHERE student_id = ?'
+    ).get(studId);
+
+    if (!user) {
+      req.session.message = { type: 'danger', text: 'Profile not found.' };
+      return res.redirect('/student/dashboard');
+    }
+
+    res.render('profile', {
+      student: req.session.student,
+      user,
+      message: showMessage(req)
+    });
+
+  } catch (err) {
+    console.error(err);
+    req.session.message = { type: 'danger', text: 'Failed to load profile.' };
+    res.redirect('/student/dashboard');
+  }
+});
+
+// ---------------------
+// UPDATE PROFILE
+// ---------------------
+router.post('/update-profile', (req, res) => {
+  if (!req.session.student) return res.redirect('/auth/login');
+
+  const studId = req.session.student.student_id;
+  const { name, course, year_level } = req.body;
+
+  try {
+    db.prepare(`
+      UPDATE students 
+      SET name = ?, course = ?, year_level = ?
+      WHERE student_id = ?
+    `).run(name, course, year_level, studId);
+
+    // update session
+    req.session.student.name = name;
+    req.session.student.course = course;
+    req.session.student.year_level = year_level;
+
+    req.session.message = { type: 'success', text: 'Profile updated successfully!' };
+    res.redirect('/student/profile');
+
+  } catch (err) {
+    console.error(err);
+    req.session.message = { type: 'danger', text: 'Failed to update profile.' };
+    res.redirect('/student/profile');
+  }
+});
+
+
 module.exports = router;
