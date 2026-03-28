@@ -1,25 +1,23 @@
-// student.js
+
 const express = require('express');
 const router = express.Router();
 const db = require('../conn');
 
-// Helper to show flash messages once
+
 function showMessage(req) {
   const message = req.session.message;
   req.session.message = null;
   return message;
 }
 
-// ---------------------
-// Dashboard
-// ---------------------
+
 router.get('/dashboard', (req, res) => {
   if (!req.session.student) {
     console.log('No session found! Redirecting to login...');
     return res.redirect('/auth/login');
   }
 
-  // DEBUG: log session contents
+ 
   console.log('Session student object:', req.session.student);
 
   const studId = req.session.student.student_id;
@@ -59,9 +57,7 @@ router.get('/dashboard', (req, res) => {
   }
 });
 
-// ---------------------
-// Daily Planner
-// ---------------------
+
 router.get('/daily-planner', (req, res) => {
   if (!req.session.student) return res.redirect('/auth/login');
   const studId = req.session.student.student_id;
@@ -69,7 +65,7 @@ router.get('/daily-planner', (req, res) => {
   res.render('daily-planner', { student: req.session.student, tasks, message: showMessage(req) });
 });
 
-// Add Task
+
 router.get('/add-task', (req, res) => {
   if (!req.session.student) return res.redirect('/auth/login');
   res.render('add-tasks', { student: req.session.student, message: showMessage(req) });
@@ -94,7 +90,7 @@ router.post('/add-task', (req, res) => {
   }
 });
 
-// Update Task Status
+
 router.post('/update-status/:task_id', (req, res) => {
   if (!req.session.student) return res.redirect('/auth/login');
   const taskId = req.params.task_id;
@@ -111,7 +107,7 @@ router.post('/update-status/:task_id', (req, res) => {
   }
 });
 
-// Edit Task
+
 router.get('/edit-task/:task_id', (req, res) => {
   if (!req.session.student) return res.redirect('/auth/login');
   const taskId = req.params.task_id;
@@ -141,7 +137,7 @@ router.post('/edit-task/:task_id', (req, res) => {
   }
 });
 
-// Delete Task
+
 router.post('/delete-task/:task_id', (req, res) => {
   if (!req.session.student) return res.redirect('/auth/login');
   const taskId = req.params.task_id;
@@ -157,9 +153,7 @@ router.post('/delete-task/:task_id', (req, res) => {
   }
 });
 
-// ---------------------
-// Study Tracker
-// ---------------------
+
 router.get('/study-tracker', (req, res) => {
   if (!req.session.student) return res.redirect('/auth/login');
   const studId = req.session.student.student_id;
@@ -167,7 +161,7 @@ router.get('/study-tracker', (req, res) => {
   res.render('study-tracker', { student: req.session.student, sessions, message: showMessage(req) });
 });
 
-// Log New Study Session
+
 router.get('/log-session', (req, res) => {
   if (!req.session.student) return res.redirect('/auth/login');
   res.render('log-session', { student: req.session.student, message: showMessage(req) });
@@ -194,7 +188,7 @@ router.post('/log-session', (req, res) => {
   }
 });
 
-// Delete Study Session
+
 router.post('/delete-session/:study_id', (req, res) => {
   if (!req.session.student) return res.redirect('/auth/login');
   const studyId = req.params.study_id;
@@ -211,9 +205,7 @@ router.post('/delete-session/:study_id', (req, res) => {
 });
 
 
-// ---------------------
-// PROFILE
-// ---------------------
+
 router.get('/profile', (req, res) => {
   if (!req.session.student) return res.redirect('/auth/login');
 
@@ -242,9 +234,7 @@ router.get('/profile', (req, res) => {
   }
 });
 
-// ---------------------
-// UPDATE PROFILE
-// ---------------------
+
 router.post('/update-profile', (req, res) => {
   if (!req.session.student) return res.redirect('/auth/login');
 
@@ -258,7 +248,7 @@ router.post('/update-profile', (req, res) => {
       WHERE student_id = ?
     `).run(name, course, year_level, studId);
 
-    // update session
+ 
     req.session.student.name = name;
     req.session.student.course = course;
     req.session.student.year_level = year_level;
