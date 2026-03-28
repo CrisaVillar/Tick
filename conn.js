@@ -1,12 +1,12 @@
-// conn.js
+
 const Database = require('better-sqlite3');
 const path = require('path');
 
-// Create or open the database file
+
 const dbPath = path.join(__dirname, 'database.db');
 const db = new Database(dbPath);
 
-// Create tables if they don’t exist
+
 db.prepare(`
 CREATE TABLE IF NOT EXISTS students (
     student_id INTEGER PRIMARY KEY AUTOINCREMENT,
