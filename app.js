@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true}));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-//Session setup
+
 app.use(cookieSession({
     name: 'session',
     keys: ['ticktock1secretkey', 'ticktock_secret2'],
@@ -18,7 +18,7 @@ app.use(cookieSession({
     secure: false
 }));
 
-//Custom flash
+
 
 app.use((req,res, next)=> {
     res.locals.message = req.session.message;
