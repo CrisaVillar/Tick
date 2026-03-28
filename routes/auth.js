@@ -1,24 +1,22 @@
-// auth.js
+
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const db = require('../conn');
 
-// Helper: flash messages
+
 function showMessage(req) {
   const message = req.session.message;
   req.session.message = null;
   return message;
 }
 
-// ---------------------
-// Register Page
-// ---------------------
+
 router.get('/register', (req, res) => {
   res.render('register', { message: showMessage(req) });
 });
 
-// Register Process
+
 router.post('/register', async (req, res) => {
   const { name, email, password, course, year_level } = req.body;
   const hashedPass = await bcrypt.hash(password, 10);
@@ -38,14 +36,12 @@ router.post('/register', async (req, res) => {
   }
 });
 
-// ---------------------
-// Login Page
-// ---------------------
+
 router.get('/login', (req, res) => {
   res.render('login', { message: showMessage(req) });
 });
 
-// Login Process
+
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
@@ -63,7 +59,7 @@ router.post('/login', async (req, res) => {
       return res.redirect('/auth/login');
     }
 
-    // ✅ Store student in session directly — no save() needed
+   
     req.session.student = {
       student_id: student.student_id,
       name: student.name,
@@ -82,9 +78,7 @@ router.post('/login', async (req, res) => {
   }
 });
 
-// ---------------------
-// Logout
-// ---------------------
+
 router.get('/logout', (req, res) => {
   req.session = null; // clear cookie-session
   res.redirect('/');
